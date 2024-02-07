@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,12 +8,28 @@ public class Cell : MonoBehaviour
     private int groupIndex;
     private int groupDifference;
 
+    [SerializeField] private GameObject outline;
+
     [SerializeField] private TileGroup[] tileGroups;
     [HideInInspector] public UnityEvent<Cell> OnUpdated;
 
     private void Awake()
     {
         UpdateModel();
+    }
+
+    private void OnMouseEnter()
+    {
+        if(outline == null)
+            return;
+        outline.SetActive(true);
+    }
+
+    private void OnMouseExit()
+    {
+        if(outline == null)
+            return;
+        outline.SetActive(false);
     }
 
     private void OnMouseUp()
@@ -54,8 +71,8 @@ public class Cell : MonoBehaviour
     {
         if (!tileGroups[groupIndex].GetTile(tileIndex - groupDifference, out var tile))
             return;
-        if (transform.childCount > 0)
-            Destroy(transform.GetChild(0).gameObject);
+        if (transform.childCount > 1)
+            Destroy(transform.GetChild(1).gameObject);
         Instantiate(tile, transform);
     }
 }

@@ -1,37 +1,35 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [CreateAssetMenu(fileName = "TileGroup", order = 1)]
 public class TileGroup : ScriptableObject
 {
-    [SerializeField] private GameObject[] tiles;
-
-    record Record(int property)
+    [Serializable]
+    class TileModel
     {
-        public int property { get; set; }
+        [SerializeField] private GameObject[] tileVariations;
+
+        public GameObject GetRandomTile()
+        {
+            return tileVariations[Random.Range(0, tileVariations.Length)];
+        }
     }
 
-    public int MaxTiles => tiles.Length;
+    [SerializeField] private List<TileModel> tiles;
+
+    public int MaxTiles => tiles.Count;
 
     public bool GetTile(int index, out GameObject tile)
     {
-        if (index < 0 || index >= tiles.Length)
+        if (index < 0 || index >= tiles.Count)
         {
             tile = null;
             return false;
         }
-        tile = tiles[index];
-        SomeMethod(num: 5);
+        tile = tiles[index].GetRandomTile();
         return true;
-    }
-
-    private void SomeMethod(GameObject go = null, int num = 0)
-    {
-        Record r = new(1)
-        {
-            property = 2
-        };
-        Debug.Log(r.property);
     }
 }

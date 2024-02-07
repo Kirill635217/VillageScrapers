@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: TileGroup B
   m_EditorClassIdentifier: 
   tiles:
-  - {fileID: 397994670230693114, guid: bbdd7f6a49222004095f79833421c7c7, type: 3}
+  - tileVariations:
+    - {fileID: 397994670230693114, guid: bbdd7f6a49222004095f79833421c7c7, type: 3}
+    - {fileID: 397994670230693114, guid: 7b4e87554c094c14f87f26fb9604d156, type: 3}
