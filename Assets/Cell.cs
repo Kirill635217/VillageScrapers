@@ -50,6 +50,7 @@ public class Cell : MonoBehaviour
         }
 
         UpdateModel();
+        AudioManager.Instance.PlayPopSound();
         OnUpdated?.Invoke(this);
     }
 
