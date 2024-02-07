@@ -46,16 +46,19 @@ public class Cell : MonoBehaviour
 
     private void OnMouseUp()
     {
-        IncrementTileIndex();
-        UpdateModel();
-        AudioManager.Instance.PlayPopSound();
+        if (TryIncrementTileIndex())
+        {
+            UpdateModel();
+            AudioManager.Instance.PlayPopSound();
+        }
+
         OnUpdated?.Invoke(this);
     }
 
     /// <summary>
     /// Handles the increment of the tile index
     /// </summary>
-    private void IncrementTileIndex()
+    private bool TryIncrementTileIndex()
     {
         tileIndex++;
 
@@ -68,12 +71,14 @@ public class Cell : MonoBehaviour
             {
                 groupIndex--;
                 tileIndex--;
-                return;
+                return false;
             }
 
             //Update the group difference to keep track of the total tiles
             groupDifference += tileGroups[groupIndex - 1].MaxTiles;
         }
+
+        return true;
     }
 
     /// <summary>
