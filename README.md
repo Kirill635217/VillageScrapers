@@ -1,4 +1,4 @@
-# Village Scrapers
+# Village Scrapers🏡
 
 Welcome to my small 5-hour project inspired by Townscaper!
 
