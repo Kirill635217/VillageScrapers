@@ -2,10 +2,22 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Handles the cell logic, collapsing and groups
+/// </summary>
 public class Cell : MonoBehaviour
 {
+    /// <summary>
+    /// The index or weight of the tile
+    /// </summary>
     private int tileIndex;
+    /// <summary>
+    /// Index of current group (this is so tiles from different groups don't collapse)
+    /// </summary>
     private int groupIndex;
+    /// <summary>
+    /// Group difference is the total amount of tiles from previous groups to get the right index of the tile
+    /// </summary>
     private int groupDifference;
 
     [SerializeField] private GameObject outline;
@@ -34,11 +46,24 @@ public class Cell : MonoBehaviour
 
     private void OnMouseUp()
     {
+        IncrementTileIndex();
+        UpdateModel();
+        AudioManager.Instance.PlayPopSound();
+        OnUpdated?.Invoke(this);
+    }
+
+    /// <summary>
+    /// Handles the increment of the tile index
+    /// </summary>
+    private void IncrementTileIndex()
+    {
         tileIndex++;
 
+        //Check if the tile index is out of bounds, meaning no more tile types in current group
         if (tileIndex >= tileGroups[groupIndex].MaxTiles)
         {
             groupIndex++;
+            //Check if we're at the max group
             if (groupIndex >= tileGroups.Length)
             {
                 groupIndex--;
@@ -46,16 +71,18 @@ public class Cell : MonoBehaviour
                 return;
             }
 
+            //Update the group difference to keep track of the total tiles
             groupDifference += tileGroups[groupIndex - 1].MaxTiles;
         }
-
-        UpdateModel();
-        AudioManager.Instance.PlayPopSound();
-        OnUpdated?.Invoke(this);
     }
 
+    /// <summary>
+    /// Updates the cell with the new cell data
+    /// </summary>
+    /// <param name="cell"></param>
     public void UpdateCell(Cell cell)
     {
+        // if the cell should not be collapsed yet or not in the same group, return
         if (Mathf.Abs(cell.tileIndex - tileIndex) <= 1 || cell.groupIndex != groupIndex)
             return;
         tileIndex = cell.tileIndex - 1;

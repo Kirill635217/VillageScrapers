@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles the grid of cells, generation and updates
+/// </summary>
 public class Grid : MonoBehaviour
 {
     [SerializeField] private int width;
@@ -31,6 +34,10 @@ public class Grid : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called when a cell is updated, invokes updates on the surrounding cells
+    /// </summary>
+    /// <param name="cell"></param>
     private void OnCellUpdated(Cell cell)
     {
         var position = cell.transform.position;
